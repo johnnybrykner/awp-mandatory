@@ -19,15 +19,18 @@ li {
   list-style-type: none;
 }
 
-.questions__ask_button {
-  display: block;
-  padding: 1rem 2rem;
+.questions__ask_button,
+.post__answer_button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 2rem;
   background-color: crimson;
   border: solid 1px #222;
-  width: 150px;
   text-align: center;
   font-weight: bold;
   cursor: pointer;
+  height: 50px;
 }
 
 .questions__post {
@@ -54,16 +57,46 @@ li {
   cursor: pointer;
 }
 
+.answer__container {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: baseline;
+  transform: translateY(-100%);
+  transition: all 0.5s ease;
+  position: relative;
+  z-index: -1;
+  opacity: 0;
+}
+
+.answer__container.shown {
+  transform: translateY(0);
+  height: inherit;
+  opacity: 1;
+  z-index: 0;
+}
+
+.post__answer_button {
+  position: relative;
+  z-index: 1;
+  width: 150px;
+}
+
+.post__answer_button.close {
+  background-color: grey;
+}
+
 .ask__container {
   display: flex;
   flex-flow: column nowrap;
 }
 
-.ask__form {
+.ask__form,
+.answer__form {
   display: flex;
 }
 
-.ask__error {
+.ask__error,
+.answer_error {
   display: block;
   color: red;
   text-align: center;

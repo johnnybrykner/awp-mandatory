@@ -14,7 +14,7 @@ export default class Questions extends React.Component {
           <Question
             editPost={(editedPost) => this.props.editPost(editedPost)}
             question={post}
-            key={post.id}
+            key={post._id}
           ></Question>
         );
       });

@@ -19,8 +19,8 @@ export default class App extends React.Component {
   async fetch(method, body, id) {
     const baseUrl =
       id !== undefined
-        ? `http://localhost:8080/posts/${id}`
-        : "http://localhost:8080/posts";
+        ? `https://awp-mandatory.herokuapp.com/posts/${id}`
+        : "https://awp-mandatory.herokuapp.com/posts";
     let raw = [];
     if (!method && !body) {
       raw = await fetch(baseUrl);
@@ -54,7 +54,7 @@ export default class App extends React.Component {
   }
 
   editPost(editedPost) {
-    this.fetch("put", editedPost, editedPost.id);
+    this.fetch("put", editedPost, editedPost._id);
   }
 
   render() {

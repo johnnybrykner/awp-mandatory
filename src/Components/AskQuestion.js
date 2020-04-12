@@ -1,6 +1,6 @@
 import React from "react";
-import { v4 as uuidv4 } from "uuid";
 import { navigate } from "@reach/router";
+import { Question } from "../db";
 
 export default class AskQuestion extends React.Component {
   constructor() {
@@ -33,13 +33,15 @@ export default class AskQuestion extends React.Component {
   submitForm(event) {
     event.preventDefault();
     if (this.state.title !== "" && this.state.question !== "") {
-      this.props.addPost({
-        id: uuidv4(),
-        title: this.state.title,
-        question: this.state.question,
-        upvotes: 0,
-        downvotes: 0,
-      });
+      this.props.addPost(
+        new Question({
+          title: this.state.title,
+          question: this.state.question,
+          upvotes: 0,
+          downvotes: 0,
+          answers: [],
+        })
+      );
       navigate("/");
     }
     if (this.state.title === "") {
@@ -72,7 +74,11 @@ export default class AskQuestion extends React.Component {
               placeholder="Your question"
               onChange={this.questionChange}
             ></input>
-            <input type="submit" onClick={this.submitForm}></input>
+            <input
+              type="submit"
+              onClick={this.submitForm}
+              value="Submit"
+            ></input>
           </div>
           <span className="ask__error">{this.state.error}</span>
         </form>
