@@ -37,7 +37,7 @@ export default class App extends React.Component {
 
     const posts = await raw.json();
 
-    if (posts) {
+    if (posts.length) {
       this.setState((_) => ({
         posts,
         empty: false,

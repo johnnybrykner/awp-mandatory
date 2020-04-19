@@ -6,7 +6,7 @@ export default class Question extends React.Component {
     this.state = {
       question: this.props.question,
       answering: false,
-      answer: "",
+      answerText: "",
       error: "",
     };
 
@@ -41,9 +41,13 @@ export default class Question extends React.Component {
     );
   }
 
+  acceptAnswer(answerId) {
+    console.log(answerId);
+  }
+
   answerChange({ target }) {
     this.setState((_) => ({
-      answer: target.value,
+      answerText: target.value,
       error: "",
     }));
   }
@@ -52,6 +56,7 @@ export default class Question extends React.Component {
     this.setState(
       {
         answering: !this.state.answering,
+        error: "",
       },
       (_) => {
         if (this.state.answering) {
@@ -72,21 +77,26 @@ export default class Question extends React.Component {
 
   submitAnswer(event) {
     event.preventDefault();
-    if (this.state.answer !== "") {
+    if (this.state.answerText !== "") {
       let updatedAnswers = this.state.question.answers;
-      updatedAnswers.push(this.state.answer);
+      updatedAnswers.push({
+        id: this.state.question.answers.length,
+        text: this.state.answerText,
+        accepted: false,
+      });
       this.setState(
         {
           question: {
             ...this.state.question,
             answers: updatedAnswers,
           },
+          answerText: "",
         },
         () => this.props.editPost(this.state.question)
       );
       this.toggleAnswer();
     }
-    if (this.state.answer === "") {
+    if (this.state.answerText === "") {
       this.setState((_) => ({
         error: "Your answer seems to be empty, that does not answer anything!",
       }));
@@ -96,8 +106,16 @@ export default class Question extends React.Component {
   renderAnswers() {
     const answers = this.props.question.answers.map((answer) => {
       return (
-        <li className="post__answer" key={answer}>
-          <h4>{answer}</h4>
+        <li className="post__answer" key={answer.id}>
+          <h4>{answer.text}</h4>
+          <div className="answer__accept">
+            <span>Did this answer you question?</span>
+            <input
+              type="checkbox"
+              value={answer.accepted}
+              onChange={(_) => this.acceptAnswer(answer.id)}
+            ></input>
+          </div>
         </li>
       );
     });
@@ -128,7 +146,7 @@ export default class Question extends React.Component {
               <div className="answer__form">
                 <input
                   name="answer"
-                  value={this.state.answer}
+                  value={this.state.answerText}
                   placeholder="What is your answer?"
                   onChange={this.answerChange}
                 ></input>

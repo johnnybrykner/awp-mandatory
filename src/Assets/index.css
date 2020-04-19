@@ -2,6 +2,16 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
+  padding: 4rem;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+h2 {
+  margin-bottom: 0.5rem;
 }
 
 h1,
@@ -15,8 +25,17 @@ a {
   text-decoration: none;
 }
 
+input {
+  padding: 1rem;
+  margin-top: 1.5rem;
+}
+
 li {
   list-style-type: none;
+}
+
+article {
+  margin-bottom: 2rem;
 }
 
 .questions__ask_button,
@@ -66,6 +85,7 @@ li {
   position: relative;
   z-index: -1;
   opacity: 0;
+  height: 0;
 }
 
 .answer__container.shown {
@@ -73,12 +93,33 @@ li {
   height: inherit;
   opacity: 1;
   z-index: 0;
+  height: 175px;
 }
 
 .post__answer_button {
   position: relative;
   z-index: 1;
   width: 150px;
+}
+
+.post__answer {
+  line-height: 2rem;
+  padding: 1rem;
+  margin-top: 1rem;
+  background-color: lightgray;
+  display: flex;
+  justify-content: space-between;
+}
+
+.answer__accept {
+  display: flex;
+}
+
+.post__answer input {
+  margin: 0;
+  margin-left: 1rem;
+  height: 2rem;
+  width: 2rem;
 }
 
 .post__answer_button.close {
@@ -93,11 +134,12 @@ li {
 .ask__form,
 .answer__form {
   display: flex;
+  flex-flow: column nowrap;
 }
 
 .ask__error,
 .answer_error {
   display: block;
   color: red;
-  text-align: center;
+  margin-top: 0.5rem;
 }
