@@ -41,8 +41,29 @@ export default class Question extends React.Component {
     );
   }
 
-  acceptAnswer(answerId) {
-    console.log(answerId);
+  toggleAccepted({ target }, answerId) {
+    let updatedAnswers = this.state.question.answers;
+    updatedAnswers.forEach((answer) => {
+      answer.accepted = false;
+    });
+    updatedAnswers.find((answer) => answer.id === Number(answerId)).accepted =
+      target.checked;
+    target.parentNode.parentNode.parentElement
+      .querySelectorAll(".post__answer")
+      .forEach((answer) => answer.classList.remove("accepted"));
+    if (target.checked === true) {
+      target.parentNode.parentElement.classList.add("accepted");
+    }
+
+    this.setState(
+      {
+        question: {
+          ...this.state.question,
+          answers: updatedAnswers,
+        },
+      },
+      () => this.props.editPost(this.state.question)
+    );
   }
 
   answerChange({ target }) {
@@ -53,26 +74,10 @@ export default class Question extends React.Component {
   }
 
   toggleAnswer() {
-    this.setState(
-      {
-        answering: !this.state.answering,
-        error: "",
-      },
-      (_) => {
-        if (this.state.answering) {
-          document.querySelector(".answer__container").classList.add("shown");
-          document.querySelector(
-            ".post__answer_button"
-          ).innerHTML = `<span class="material-icons">close</span>`;
-        } else {
-          document
-            .querySelector(".answer__container")
-            .classList.remove("shown");
-          document.querySelector(".post__answer_button").innerText =
-            "Write an answer!";
-        }
-      }
-    );
+    this.setState({
+      answering: !this.state.answering,
+      error: "",
+    });
   }
 
   submitAnswer(event) {
@@ -106,14 +111,21 @@ export default class Question extends React.Component {
   renderAnswers() {
     const answers = this.props.question.answers.map((answer) => {
       return (
-        <li className="post__answer" key={answer.id}>
+        <li
+          className={answer.accepted ? "post__answer accepted" : "post__answer"}
+          key={answer.id}
+        >
           <h4>{answer.text}</h4>
           <div className="answer__accept">
-            <span>Did this answer you question?</span>
+            <span>
+              {answer.accepted
+                ? "Marked as a solution!"
+                : "Did this answer you question?"}
+            </span>
             <input
               type="checkbox"
-              value={answer.accepted}
-              onChange={(_) => this.acceptAnswer(answer.id)}
+              checked={answer.accepted}
+              onChange={(event) => this.toggleAccepted(event, answer.id)}
             ></input>
           </div>
         </li>
@@ -140,9 +152,19 @@ export default class Question extends React.Component {
               </div>
             </div>
             <span className="post__answer_button" onClick={this.toggleAnswer}>
-              Write an answer!
+              {this.state.answering ? (
+                <span className="material-icons">close</span>
+              ) : (
+                "Write an answer!"
+              )}
             </span>
-            <form className="answer__container">
+            <form
+              className={
+                this.state.answering
+                  ? "answer__container shown"
+                  : "answer__container"
+              }
+            >
               <div className="answer__form">
                 <input
                   name="answer"

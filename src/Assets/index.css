@@ -59,6 +59,10 @@ article {
   flex-flow: column nowrap;
 }
 
+.questions__post h3 {
+  margin-bottom: 0.5rem;
+}
+
 .post__ratings {
   display: flex;
   justify-content: flex-end;
@@ -109,6 +113,10 @@ article {
   background-color: lightgray;
   display: flex;
   justify-content: space-between;
+}
+
+.post__answer.accepted {
+  background-color: lightgreen;
 }
 
 .answer__accept {

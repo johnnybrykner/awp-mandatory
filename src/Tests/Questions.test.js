@@ -10,7 +10,16 @@ test("renders the empty post message without any posts present", () => {
 
 test("renders the list of posts present", () => {
   const { getByText } = render(
-    <Questions empty={false} posts={[{ _id: 0, title: "Random post" }]} />
+    <Questions
+      empty={false}
+      posts={[
+        {
+          _id: 0,
+          title: "Random post",
+          answers: [{ id: 0, text: "Random answer", accepted: true }],
+        },
+      ]}
+    />
   );
   const postTitle = getByText(/random post/i);
   expect(postTitle).toBeInTheDocument();
